@@ -29,32 +29,38 @@ app.get("/diary", (req, res) => {
 });
 
 app.post("/diary", (req, res) => {
-    console.log(req.body);
     const newDiary = {
         id: Date.now(),
         date: currentDate(),...req.body
     }
     diaryData.push(newDiary)
     res.json({
-        stat: "eklendi"
+        stat: "eklendi",
+        data: newDiary,
+        
     })
     
 });
 
 app.delete("/diary/:id", (req, res) => {
     const id = req.params.id
-    
-    const data = diaryData.filter(diary => {
-        console.log(parseInt(diary.id) == parseInt(id))
-        return parseInt(diary.id) !== parseInt(id)
+    const found = diaryData.findIndex((diary ) => {
+        
+        return parseInt(diary.id) === parseInt(id)
     })
-    
-    res.json({data})
+    diaryData.splice(found, 1)
+    res.json({data: diaryData})
 });
 
-app.patch("/diary", (req, res) => {
-  res.send("güncellendi");
+app.patch("/diary/:id", (req, res) => {
+    const id = req.params.id
+    const newContent = req.body.diaryContent
+    const diaryIndex = diaryData.findIndex(diary => parseInt(diary.id) === parseInt(id))
+        diaryData[diaryIndex].diary = newContent
+  
+    res.send();
 });
+
 
 
 
