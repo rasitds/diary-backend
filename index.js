@@ -3,19 +3,15 @@ const app = express();
 const cors = require("cors")
 app.use(cors())
 app.use(express.json())
+const funcs = require('./helpers')
 
 
-const currentDate = () => {
-    const current = new Date()
-    const date = current.getDate() + "." + (current.getMonth()+1) + "." + current.getFullYear()
-    return date
-}
 
 const diaryData = [
     {
         id: Date.now(),
-        diary: "Kampüs'te coworking",
-        date: currentDate(),
+        content: "Kampüs'te coworking",
+        date: funcs.currentDate(),
         isFav: false
     }
 ]
@@ -31,7 +27,7 @@ app.get("/diary", (req, res) => {
 app.post("/diary", (req, res) => {
     const newDiary = {
         id: Date.now(),
-        date: currentDate(),...req.body
+        date: funcs.currentDate(),...req.body
     }
     diaryData.push(newDiary)
     res.json({
@@ -56,7 +52,7 @@ app.patch("/diary/:id", (req, res) => {
     const id = req.params.id
     const newContent = req.body.diaryContent
     const diaryIndex = diaryData.findIndex(diary => parseInt(diary.id) === parseInt(id))
-        diaryData[diaryIndex].diary = newContent
+        diaryData[diaryIndex].content = newContent
   
     res.send();
 });
