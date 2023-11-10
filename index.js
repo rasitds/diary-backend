@@ -1,36 +1,15 @@
 const express = require("express");
 const app = express();
+const db = require("./db");
 const cors = require("cors");
 app.use(cors());
 app.use(express.json());
+const api = require("./api")
 
-const db = require("./db");
-
-app.get("/diary", (req, res) => {
-  res.json({
-    status: "ok",
-    data: db.diaryData,
-  });
-});
-
-app.post("/diary", (req, res) => {
-  const newDiary = db.addDiary(req);
-
-  res.json({
-    stat: "eklendi",
-    data: newDiary,
-  });
-});
-
-app.delete("/diary/:id", (req, res) => {
-  db.deleteDiary(req);
-  res.json({ data: db.diaryData });
-});
-
-app.patch("/diary/:id", (req, res) => {
-  db.updateDiary(req);
-  res.send();
-});
+app.use("/diary", api,   (req,res,next)  => {console.log("use")//sadece /diary ile eşleşenler gelsin diyoruz buraya
+    res.send("aradığınız sayfa bulunamadı...")
+}   
+)
 
 console.log("listening to 3000...");
 app.listen(3000);

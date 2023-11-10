@@ -21,18 +21,14 @@ const addDiary = (req) => {
 
 const deleteDiary = (req) => {
   const id = req.params.id;
-  const found = diaryData.findIndex((diary) => {
-    return parseInt(diary.id) === parseInt(id);
-  });
+  const found = funcs.findDiaryIndex(diaryData,id)
   diaryData.splice(found, 1);
 };
 
 const updateDiary = (req) => {
   const id = req.params.id;
   const newContent = req.body.diaryContent;
-  const diaryIndex = diaryData.findIndex(
-    (diary) => parseInt(diary.id) === parseInt(id)
-  );
+  const diaryIndex = funcs.findDiaryIndex(diaryData,id)
   diaryData[diaryIndex].content = newContent;
 };
 
